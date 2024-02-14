@@ -1,8 +1,5 @@
-name = input("github 아이디 입력 : ")
-mail = input("github 이메일 입력 하시오 : ")
+hand = [1,2,3,9,10]
 
-if name and mail :
-    f=open("참여명단.txt","a")
-    f.write(f"name : {name} , mail : {mail}\n")
-    f.close()
-    
+for id  , lm in enumerate(hand):
+    print(id , "인덱스 번호" , lm , "인수 값")
+
