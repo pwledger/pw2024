@@ -22,13 +22,6 @@ with mp_hands.Hands(model_complexity=0,min_detection_confidence=0.5,min_tracking
         
         if results.multi_hand_landmarks:
             for hand in results.multi_hand_landmarks:
-                mp_drawing.draw_landmarks(
-                    image,
-                    hand,
-                    mp_hands.HAND_CONNECTIONS,
-                    mp_drawing_styles.get_default_hand_landmarks_style(),
-                    mp_drawing_styles.get_default_hand_connections_style())
-                
                 x1,y1,x2,y2 = 0,0,0,0
                 for id , lm in enumerate(hand.landmark):
                     h,w,c = image.shape
