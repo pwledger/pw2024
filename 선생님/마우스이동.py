@@ -1,11 +1,21 @@
+import pyautogui
+import time
+
+"""print(pyautogui.size())
+time.sleep(2)
+print(pyautogui.position())
+pyautogui.moveTo(100, 200, 2)
+pyautogui.click()
+pyautogui.click(button='right')
+"""
 import cv2
 import mediapipe as mp
 
-mp_drawing = mp.solutions.drawing_utils
-mp_drawing_styles = mp.solutions.drawing_styles
 mp_hands = mp.solutions.hands
 
 cap = cv2.VideoCapture(0)
+
+screen_width, screen_height = pyautogui.size()
 
 with mp_hands.Hands(model_complexity=0,min_detection_confidence=0.5,min_tracking_confidence=0.5) as hands:
     while cap.isOpened():
@@ -19,22 +29,24 @@ with mp_hands.Hands(model_complexity=0,min_detection_confidence=0.5,min_tracking
         results = hands.process(image)                 # 인식
 
         image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-        
         if results.multi_hand_landmarks:
             for hand in results.multi_hand_landmarks:
                 x1,y1,x2,y2 = 0,0,0,0
-                for id , lm in enumerate(hand.landmark): # id 인덱스 번호 ,  lm 데이터 값
-                    h,w,c = image.shape # 높이 , 너비, 채널
+                for id , lm in enumerate(hand.landmark): # id : landmark 번호 , lm 좌표비율 값
+                    h,w,c = image.shape 
                     cx ,cy = int(lm.x*w) , int(lm.y*h) # cv2 에서 사용할 좌표 정보
                     if id == 8:
-                        cv2.circle(image , (cx , cy) , 20 ,(255,0,0) , cv2.FILLED)
-                        x1 ,y1 = cx , cy
+                        x1,y1 = cx,cy
+                        cv2.circle(image , (cx , cy) , 10 ,(255,0,0) , cv2.FILLED)
+                        pyautogui.moveTo(screen_width - cx*screen_width/w, cy*screen_height/h)
                     if id == 12:
-                        cv2.circle(image , (cx , cy) , 20 ,(255,0,0) , cv2.FILLED)
-                        x2 , y2 = cx , cy
-                #cv2.rectangle(image , (x1 ,y1) , (x2 , y2) , (255,0,0) , cv2.FILLED)
-                    
-        cv2.imshow('MediaPipe Hands', cv2.flip(image, 1))
+                        x2,y2 = cx,cy
+                        cv2.circle(image , (cx , cy) , 10 ,(255,0,0) , cv2.FILLED)
+                # x1,y1,x2,y2 의 거리부터 출력
+                
+                # 클릭에 들어간느 부분을 완성해 보세요 tip) 8번 이랑 12번 사용 
+
+        cv2.imshow('MediaPipe Hands', cv2.flip(image,1))
 
         if cv2.waitKey(5) & 0xFF == 27:
             break

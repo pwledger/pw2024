@@ -1,5 +1,3 @@
-hand = [1,2,3,9,10]
+import time
 
-for id  , lm in enumerate(hand):
-    print(id , "인덱스 번호" , lm , "인수 값")
-
+print(time.time())

@@ -21,3 +21,4 @@ def face_func():
     capture.release()
     cv2.destroyAllWindows()
 
+face_func()
